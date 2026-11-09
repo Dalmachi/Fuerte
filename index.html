@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>fuerte</title>
+<meta name="description" content="fuerte: a thorned 3D script typeface that grows as you type. Inspired by rose thorns and the immigrant experience.">
+<meta property="og:title" content="fuerte">
+<meta property="og:description" content="A thorned typeface that grows as you type.">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<h1>Thornscript</h1>
+<div id="ui">
+ <div class="row"><input type="text" id="txt" value="Rose" maxlength="60" autocapitalize="off" autocorrect="off" spellcheck="false" autocomplete="off" aria-label="Type here">
+ <button id="reg">Regenerate</button><button id="rep">Regrow</button><button id="sw">Rotate: on</button><button id="th">Dark</button><button id="exp">Export PNG</button><button id="fw" style="border-color:#8c1b16">Fix words</button><button id="ke" style="border-color:#8c1b16">Correct spacing &amp; strokes</button><button id="shb" style="border-color:#8c1b16">Show mode</button><button id="tg">Sliders &#9662;</button></div>
+ <div id="adv" style="display:none;flex-direction:column;gap:10px;align-items:center;width:100%">
+ <div class="grid">
+ <label>Thorn size<input type="range" id="sz" min=".3" max="4" step=".05" value="1.15"></label>
+ <label>Thorn density<input type="range" id="de" min=".2" max="5" step=".05" value="2.2"></label>
+ <label>Stem thickness<input type="range" id="st" min=".5" max="2.5" step=".05" value="1"></label>
+ <label>Growth<input type="range" id="gr" min="0" max="100" step="1" value="0"></label>
+ <label>Thorn variety<input type="range" id="tv" min="0" max="1" step=".05" value="1"></label>
+ <label>Stem colour<input type="color" id="sc" value="#1f5517" style="width:100%;height:26px;padding:0;border:1px solid var(--bb);background:none"></label>
+ <label>Thorn colour<input type="color" id="tc" value="#4a120c" style="width:100%;height:26px;padding:0;border:1px solid var(--bb);background:none"></label>
+ <label>New growth colour<input type="color" id="gc" value="#9fcf66" style="width:100%;height:26px;padding:0;border:1px solid var(--bb);background:none"></label>
+ <label>Growth glow<input type="range" id="gk" min="0" max="1" step=".05" value=".22"></label>
+ <label>Root wriggle<input type="range" id="wg" min="0" max="2.5" step=".05" value=".65"></label>
+ <label>Arm strands<input type="range" id="bk" min="0" max="8" step="1" value="4"></label>
+ <label>Grow speed<input type="range" id="gs" min=".5" max="16" step=".1" value="1.3"></label>
+ <label>Tendrils<input type="range" id="td" min="0" max="3" step=".1" value="0"></label>
+
+ <label>Smooth strokes<input type="range" id="sm" min="0" max="30" step="1" value="0"></label>
+ <label>Smooth joins<input type="range" id="jn" min=".05" max="1.2" step=".05" value=".5"></label>
+ <label>Wobble<input type="range" id="wb" min="0" max="2" step=".05" value="0"></label>
+ <label>Stem texture<input type="range" id="tx" min="0" max="3" step=".02" value=".18"></label>
+ <label>Letter spacing<input type="range" id="sp" min="-.1" max=".3" step=".005" value="0"></label>
+ </div>
+ <div class="row"><input type="text" id="pr" value="al" maxlength="2" autocapitalize="off" autocorrect="off" spellcheck="false" autocomplete="off" aria-label="Letter pair" style="flex:0 1 70px">
+ <label style="flex:1 1 220px">Spacing for that letter pair<input type="range" id="ps" min="-.2" max=".3" step=".005" value="-.06"></label>
+ <button id="gm">Growth: write</button><button id="cn">Join letters: on</button><button id="rs">Reset all</button></div>
+ <div id="pl" style="color:var(--mut);font-size:12px;text-align:center"></div>
+ </div>
+ <div id="hint"></div>
+</div>
+<div id="ed"><div id="et"></div><div class="row"><button id="t0">Spacing</button><button id="t1">Joins &amp; lines</button><button id="t2">Height</button></div><div class="row"><button id="eb">Back</button><button id="es">Skip</button><button id="er">Reset word</button><button id="ec" style="border-color:#8c1b16">Continue &#10003;</button></div><div id="eg"></div>
+ <div class="row"><input type="text" id="nw" placeholder="add a word" maxlength="40" autocapitalize="off" autocorrect="off" spellcheck="false" autocomplete="off" style="flex:1 1 140px;font-size:15px"><button id="na">Add word</button><button id="ee">Export saved</button><button id="ex2">Close</button></div></div>
+<div id="ex"><div>Copy this and paste it back to me to build it in as the default.</div><textarea id="et2" readonly></textarea><div class="row" style="width:auto"><button id="ecp">Copy</button><button id="ecl">Close</button></div></div>
+
+<svg id="hs" xmlns="http://www.w3.org/2000/svg"></svg>
+<div id="kp"><div id="kt"></div><div id="ki"></div>
+ <div class="row"><button id="k0">Spacing</button><button id="k1">Strokes</button><button id="k2">Height</button><button id="k3">Width</button><button id="k4">Shape</button><button id="kgv">Compare all</button><button id="kpr">Progress</button><button id="kpl">Play growth</button><button id="kzm">Zoom to selected</button><button id="kz1">Zoom +</button><button id="kz2">Zoom −</button><button id="kz0">Reset view</button><button id="kfp" style="display:none">◀ word</button><button id="kfn" style="display:none">word ▶</button><button id="kmn">Hide controls</button></div>
+ <div id="kc"></div>
+ <div class="row kr2"><button id="ku">Undo</button><button id="kr">Redo</button><button id="ks">Reset selected rule</button><input type="text" id="kin" placeholder="type your own text, Enter to preview" maxlength="40" autocapitalize="off" autocorrect="off" spellcheck="false" autocomplete="off" style="flex:1 1 200px;font-size:13px;padding:6px 8px"></div>
+ <div class="row"><button id="kb">Back</button><button id="kk">Skip</button><button id="kw">Needs work</button><button id="ka" style="border-color:#8c1b16">Approve &#10003; (Enter)</button></div>
+ <div class="row kr4"><button id="kx1">Export all</button><button id="kx2">Import</button><button id="krl" style="display:none"></button><button id="kx">Close</button><button id="krs" style="border-color:#8c1b16">Reset saved</button></div>
+ <div id="km"></div></div>
+<div id="kpg"><div>Progress &mdash; green = checked, red = needs work, plain = not yet reviewed. Tap an item to jump to it.</div><div id="kpb"></div><button id="kpx">Close</button></div>
+<div id="kio"><div id="kit"></div><textarea id="kie" spellcheck="false"></textarea><div class="row" style="width:auto"><button id="kic">Copy</button><button id="kid">Download .json</button><button id="kia">Replace all corrections</button><button id="kix">Close</button></div></div>
+<div id="ov"><img id="oi" alt="Export"><div>Transparent PNG. Right-click or long-press the image to save it.</div><button id="cl">Close</button></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script src="js/glyphs.js"></script>
+<script src="js/main.js"></script>
+<script src="js/show.js"></script>
+</body>
+</html>
