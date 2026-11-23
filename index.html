@@ -408,7 +408,7 @@ function grow(v){if(!vine){placeCaret(0);return}v=cl(v,0,1);const f=v*TT;uF.valu
  if(leaves){ldata.forEach((d,i)=>{const p=cl((f-d.t0)/d.dur,0,1),ws=easeOutCubic(cl(p*1.3,0,1)),hs=easeOutBack(cl((p-.05)/.95,0,1));
   M4.makeBasis(d.x.clone().multiplyScalar(d.w*ws),d.y.clone().multiplyScalar(d.h*hs),d.z.clone().multiplyScalar(d.w*ws));M4.setPosition(d.pos);leaves.setMatrixAt(i,M4)});
   if(!ldata.length){M4.makeScale(0,0,0);leaves.setMatrixAt(0,M4)}leaves.instanceMatrix.needsUpdate=true}}
-function fit(){const FH=Math.max(160,innerHeight-EDH);cam.aspect=innerWidth/FH;cam.updateProjectionMatrix();const vh=2*6.5*Math.tan(cam.fov*Math.PI/360),s=Math.min(CEM?9:3,vh*cam.aspect*.9/(cw+.4),vh*(CEM?.8:.62)/(chh+.2));root.scale.setScalar(s);floor.position.y=-(chh/2+.25)*s;R.setSize(innerWidth,FH)}
+function fit(){const FH=Math.max(160,innerHeight-EDH);cam.aspect=innerWidth/FH;cam.updateProjectionMatrix();const vh=2*6.5*Math.tan(cam.fov*Math.PI/360),DK=!CEM&&innerWidth>900,s=Math.min(CEM?9:DK?9:3,vh*cam.aspect*(DK?.97:.9)/(cw+.4),vh*(CEM?.8:DK?1.2:.62)/(chh+.2));root.scale.setScalar(s);root.position.set(DK?-.02*vh*cam.aspect:0,DK?.09*vh:0,0);floor.position.y=-(chh/2+.25)*s;R.setSize(innerWidth,FH)}
 
 const moteMat=new THREE.ShaderMaterial({transparent:true,depthWrite:false,uniforms:{uTime,uDone,uH:{value:1},uPR:{value:1},uCol:{value:new THREE.Color('#f0c24b')}},
  vertexShader:'attribute vec3 bp;attribute float ph;uniform float uTime;uniform float uDone;uniform float uH;uniform float uPR;varying float vA;void main(){float sp=.012+.02*fract(ph*7.3);float fy=fract(ph+uTime*sp);vec3 p=bp;p.y+=(fy-.5)*uH*.9;p.x+=sin(uTime*.35+ph*40.)*.12;p.z+=cos(uTime*.3+ph*25.)*.1;vec4 mv=modelViewMatrix*vec4(p,1.);vA=sin(3.14159*fy)*uDone*(.35+.65*fract(ph*13.7));gl_PointSize=(3.+5.*fract(ph*5.1))*uPR*(7./-mv.z);gl_Position=projectionMatrix*mv;}',
@@ -1004,7 +1004,7 @@ function recolorRoses(){const th=roseTheme();for(const r of roses){r.dry.set(th.
 function clearRoses(){roses.forEach(r=>{world.remove(r.g);r.g.traverse(o=>{if(o.isMesh&&o.material&&o.material!==sMat)o.material.dispose();if(o.isMesh&&o.geometry&&o.geometry!==rGeo)o.geometry.dispose()})});roses=[]}
 function startRoses(t0){clearRoses();if(!vine||!ROSE||!tdata.length)return;
  if(RG.length<10)return;const th=roseTheme(),rnd=Math.random,want=Math.max(5,Math.min(10,Math.round(cw*2.6))),pick=[],F=Math.pow(Math.max(1,cw/1.585),.5);
- const zo=q=>Math.max(0,Math.min(9,Math.floor((q.x/cw+.4)/.8*10))),sh=A=>{for(let i=A.length-1;i>0;i--){const j=Math.floor(rnd()*(i+1));[A[i],A[j]]=[A[j],A[i]]}return A},YL=Math.min(...RG.map(p=>p.y)),YH=Math.max(...RG.map(p=>p.y)),yb=q=>Math.max(0,Math.min(3,Math.floor((q.y-YL)/(YH-YL+1e-6)*4))),YS=sh([0,1,2,3]),ZS=sh([0,1,2,3,4,5,6,7,8,9]),SZ=sh([.052,.016,.04,.022,.034,.058,.028,.046,.019,.037]);
+ const zo=q=>Math.max(0,Math.min(9,Math.floor((q.x/cw+.4)/.8*10))),sh=A=>{for(let i=A.length-1;i>0;i--){const j=Math.floor(rnd()*(i+1));[A[i],A[j]]=[A[j],A[i]]}return A},YL=Math.min(...RG.map(p=>p.y)),YH=Math.max(...RG.map(p=>p.y)),yb=q=>Math.max(0,Math.min(3,Math.floor((q.y-YL)/(YH-YL+1e-6)*4))),YS=sh([0,1,2,3]),ZS=sh([0,1,2,3,4,5,6,7,8,9]),SZ=sh([.044,.014,.035,.018,.029,.048,.023,.039,.016,.031]);
  const lay=()=>{const P=[],sz=sh(SZ.slice());for(;P.length<want;){const S=(sz[P.length%10]*(.94+rnd()*.12))*F;let best=null,bd=-1e9;
   for(let t=0;t<80;t++){const q=RG[Math.floor(rnd()*RG.length)];if(Math.abs(q.x)>cw*.4)continue;
    let d=P.length?1e9:rnd();for(const o of P)d=Math.min(d,Math.hypot(o.q.x-q.x,o.q.y-q.y)-(o.S+S)*1.8);
@@ -1012,13 +1012,15 @@ function startRoses(t0){clearRoses();if(!vine||!ROSE||!tdata.length)return;
   if(!best)break;P.push({q:best,S})}
   let m=1e9,xs=0,ys=0;P.forEach((a,k)=>{xs+=a.q.x;ys+=a.q.y;for(let l=k+1;l<P.length;l++)m=Math.min(m,Math.hypot(a.q.x-P[l].q.x,a.q.y-P[l].q.y)-(a.S+P[l].S)*1.8)});
   const n=P.length||1,mx=xs/n,my=ys/n;let vx=0,vy=0;P.forEach(a=>{vx+=(a.q.x-mx)**2;vy+=(a.q.y-my)**2});
-  return{P,sc:m+Math.sqrt(vx/n)*.5+Math.sqrt(vy/n)*.5+(P.length>=want?1:0)}};
- let bestL=null;for(let k=0;k<16;k++){const L=lay();if(!bestL||L.sc>bestL.sc)bestL=L}
+  let pen=0;for(let a=0;a<P.length;a++)for(let b=a+1;b<P.length;b++){const A=P[a].q,B=P[b].q;if(Math.abs(A.y-B.y)<.14*chh)pen+=.12;if(Math.abs(A.x-B.x)<.1*cw)pen+=.12;
+   for(let c=b+1;c<P.length;c++){const C=P[c].q,ar=Math.abs((B.x-A.x)*(C.y-A.y)-(C.x-A.x)*(B.y-A.y)),ln=Math.hypot(B.x-A.x,B.y-A.y)*Math.hypot(C.x-A.x,C.y-A.y)+1e-6;if(ar/ln<.18)pen+=.1}}
+  return{P,sc:m+Math.sqrt(vx/n)*.5+Math.sqrt(vy/n)*.5+(P.length>=want?1:0)-pen}};
+ let bestL=null;for(let k=0;k<40;k++){const L=lay();if(!bestL||L.sc>bestL.sc)bestL=L}
  bestL.P.forEach(o=>pick.push(o));
  const CF=[[3,.4,0,.0,.0],[3,.58,0,.0,.02],[4,.74,0,.03,.08],[5,.88,0,.06,.16],[5,1.0,0,.1,.26],[6,1.1,0,.16,.38]];
  pick.forEach(({q,S})=>{
   const anchor=new V3(q.x,q.y,q.z),base=anchor.clone(),front=Math.abs(q.x)<cw*.17,side=q.x<0?-1:1,axis=front?new V3((rnd()-.5)*.3,(rnd()-.5)*.3,1).normalize():new V3(side*.6,.25+(rnd()-.5)*.2,.78+(rnd()-.5)*.1).normalize();base.addScaledVector(axis,front?q.r*.7+S*.25:q.r*.6+S*.3);
-  const g=new THREE.Group();g.position.copy(base);g.quaternion.setFromUnitVectors(new V3(0,1,0),axis);g.visible=false;
+  const g=new THREE.Group();g.position.copy(base);g.quaternion.setFromUnitVectors(new V3(0,1,0),axis);g.rotateY(rnd()*Math.PI*2);g.visible=false;
   const petals=[];
   CF.forEach((c,L)=>{for(let k=0;k<c[0];k++){const th0=k/c[0]*Math.PI*2+L*2.2+rnd()*.12,size=S*c[1]*(.92+rnd()*.16),pv=new THREE.Group(),mat=new THREE.MeshStandardMaterial({vertexColors:true,side:THREE.DoubleSide,roughness:th.r,metalness:th.m,envMapIntensity:.4,transparent:true});
    mat.color.set(th.c);mat.color.convertSRGBToLinear();if(L<2)mat.color.multiplyScalar(.85);const m=new THREE.Mesh(petalGeo(),mat);m.scale.set(size*1.12,size*1.12,size*1.12);pv.add(m);g.add(pv);
